@@ -1,0 +1,13 @@
+#!/bin/bash
+# Git Branch Create
+# Creates a Branch with Git ... duh
+
+BRANCH_NAME=$1
+
+if [[ -z $BRANCH_NAME ]]; then
+  echo "Must supply a branch name"
+  exit 1
+fi
+
+gpa
+git checkout -b $BRANCH_NAME

@@ -1,0 +1,20 @@
+#!/bin/bash
+# Git Reset to Commit
+# Script will take a commit hash and reset the current branch to that point in time (WARN: this is not safe unless you know what you are doing)
+
+COMMIT_HASH=$1
+
+if [[ -z $COMMIT_HASH ]]; then
+  echo "please provide a commit hash to reset back to ..."
+  echo "usage: grc <commit_sha>"
+  exit 1
+fi
+
+# reset index in worktree
+git reset --hard $COMMIT_HASH
+
+# move branch pointer back to previous head
+git reset --soft "HEAD@{1}"
+
+# commit the changes
+git commit -m "reverted back to $COMMIT_HASH"

@@ -1,0 +1,5 @@
+#!/bin/bash
+# Pull everything for a git project
+
+git fetch --tags --force
+git pull --all --prune --force

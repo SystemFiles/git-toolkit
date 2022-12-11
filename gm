@@ -1,0 +1,35 @@
+#!/bin/bash
+# Git Merge
+# Will perform a squash-merge onto the default branch of the current repository
+
+FEATURE_BRANCH=$(git branch | grep '*' | cut -d' ' -f2)
+COMMIT_MESSAGE=${@:1}
+DEFAULT_BRANCH=$(git remote show origin | sed -n '/HEAD branch/s/.*: //p')
+
+if [[ -z $FEATURE_BRANCH || -z $DEFAULT_BRANCH ]]; then
+  echo "failed to capture required repo data for merge"
+  exit 1
+fi
+
+if [[ $FEATURE_BRANCH -eq $DEFAULT_BRANCH ]]; then
+  echo "must be done from a feature branch ... not $DEFAULT_BRANCH"
+  exit 1
+fi
+
+if [[ -z $COMMIT_MESSAGE ]]; then
+  echo "please set a message for the merge commit"
+  exit 1
+fi
+
+gpa
+gp "outstanding changes"
+git rebase -i $DEFAULT_BRANCH
+git checkout $DEFAULT_BRANCH
+git merge --squash $FEATURE_BRANCH
+git commit -m "$FEATURE_BRANCH $COMMIT_MESSAGE"
+git push
+
+
+# remove current branch from remote and local
+git branch -D $FEATURE_BRANCH
+git push origin --delete $FEATURE_BRANCH

@@ -1,0 +1,4 @@
+#!/bin/bash
+# One-line Branch status command to find where we are
+
+git log --all --graph --decorate --oneline --simplifyby-decoration
