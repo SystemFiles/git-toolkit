@@ -11,7 +11,7 @@ if [[ -z $FEATURE_BRANCH || -z $DEFAULT_BRANCH ]]; then
   exit 1
 fi
 
-if [[ $FEATURE_BRANCH -eq $DEFAULT_BRANCH ]]; then
+if [[ "$FEATURE_BRANCH" == "$DEFAULT_BRANCH" ]]; then
   echo "must be done from a feature branch ... not $DEFAULT_BRANCH"
   exit 1
 fi

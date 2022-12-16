@@ -2,19 +2,14 @@
 # Create provided tag on project
 
 TAG_NAME=$1
-TAG_MESSAGE=${@:2}
+TAG_MESSAGE=$(git branch | grep '*' | cut -d' ' -f2)
 
 if [[ -z $TAG_NAME ]]; then
   echo "must provide a tag name"
   exit 1
 fi
 
-if [[ -z TAG_MESSAGE ]]; then
-  echo "must provide a tag message"
-  exit 1
-fi
-
 gpa
-git tag -a "$TAG_NAME" -m "${TAG_MESSAGE[@]}"
+git tag --force -a "$TAG_NAME" -m "${TAG_MESSAGE[@]}"
 git push --tags --force
-git fetch --all --tags -–prune
+git fetch --all --tags
