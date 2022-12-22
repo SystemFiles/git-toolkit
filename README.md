@@ -1,2 +1,3 @@
 # git-toolkit
-My own opinionated toolkit for dev work
+
+An opinionated set of scripts for working with Git
