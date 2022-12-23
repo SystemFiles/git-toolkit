@@ -1,0 +1,10 @@
+#!/bin/bash
+# Git clone shortcut with pre-commit initialization
+
+if [[ ! command -v pre-commit &> /dev/null ]]; then
+    echo "pre-commit could not be found and is required to run this script"
+    exit 1
+fi
+
+git clone $1 ${@:2} && cd "$(basename "$_" .git)"
+pre-commit install 2> /dev/null
