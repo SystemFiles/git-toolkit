@@ -28,24 +28,28 @@ CHANGE_TYPE=${1}
 MESSAGE=${@:2}
 
 if [[ -z $CHANGE_TYPE ]]; then
-  echo "A change type must be supplied"
+  echo "[ERROR] A change type must be supplied"
   exit 1
 fi
 
 if [[ $CHANGE_TYPE != "feat" && $CHANGE_TYPE != "update" && $CHANGE_TYPE != "chore" && $CHANGE_TYPE != "fix" && $CHANGE_TYPE != "docs" && $CHANGE_TYPE != "refactor" && $CHANGE_TYPE != "test" && $CHANGE_TYPE != "perf" && $CHANGE_TYPE != "ci" && $CHANGE_TYPE != "build" && $CHANGE_TYPE != "init" ]]; then
-  echo "The specified change type is not valid"
-  echo "You must specify a change type described by: https://www.conventionalcommits.org/en/v1.0.0/#summary"
+  echo "[ERROR] The specified change type is not valid"
+  echo "[ERROR] You must specify a change type described by: https://www.conventionalcommits.org/en/v1.0.0/#summary"
   exit 1
 fi
 
 if [[ -z $MESSAGE ]]; then
-  echo "A message much be specified for this commit"
+  echo "[ERROR] A message much be specified for this commit"
   exit 1
 fi
 
 COMMIT_MESSAGE="${CHANGE_TYPE}: $MESSAGE"
 if [[ "$SCOPE" ]]; then
   COMMIT_MESSAGE="${CHANGE_TYPE}($SCOPE): $MESSAGE"
+fi
+
+if [[ -f "$(pwd)/.pre-commit-config.yaml" ]]; then
+  echo "[INFO] Found Pre-Commit Configuration for Project. Use `pre-commit install` to install the pre-commit hook"
 fi
 
 gpa
@@ -55,11 +59,11 @@ git commit -m "$COMMIT_MESSAGE"
 git push 2> /dev/null
 
 if [[ $? -ne 0 ]]; then
-  echo "push failed ... trying again with --set-upstream"
+  echo "[INFO] push failed ... trying again with --set-upstream"
   git push --set-upstream origin $BRANCH_NAME
 
   if [[ $? -ne 0 ]]; then
-    echo "could not push changes to remote ..."
+    echo "[ERROR] could not push changes to remote ..."
     exit 1
   fi
 fi
