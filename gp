@@ -49,7 +49,7 @@ if [[ "$SCOPE" ]]; then
 fi
 
 if [[ -f "$(pwd)/.pre-commit-config.yaml" ]]; then
-  echo "[INFO] Found Pre-Commit Configuration for Project. Use `pre-commit install` to install the pre-commit hook"
+  echo "[INFO] This project uses Pre-Commit"
 fi
 
 gpa
