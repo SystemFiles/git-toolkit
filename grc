@@ -3,7 +3,7 @@
 # Script will take a commit hash and reset the current branch to that point in time (WARN: this is not safe unless you know what you are doing)
 
 COMMIT_HASH=$1
-COMMIT_FILES=${2:@}
+COMMIT_FILES=( "${@:2}" )
 
 if [[ -z $COMMIT_HASH ]]; then
   echo "please provide a commit hash to reset back to ..."
@@ -12,8 +12,8 @@ if [[ -z $COMMIT_HASH ]]; then
 fi
 
 # reset specific files to a particular point in time
-if [[ ${#COMMIT_FILES[@]} -gt 0 ]]; then
-  git checkout $COMMIT_HASH -- ${COMMIT_FILES[@]}
+if [[ ${#COMMIT_FILES[@]} > 0 ]]; then
+  git checkout $COMMIT_HASH -- ${COMMIT_FILES[@]} > /dev/null 2>&1
   echo "moved selected files back to $COMMIT_HASH"
   echo "no commit was done to provide an opportunity to review manually"
   exit 0
