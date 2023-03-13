@@ -5,8 +5,7 @@
 COMMIT_HASH=$1
 COMMIT_FILES=( "${@:2}" )
 
-if [[ -z $COMMIT_HASH ]]; then
-  echo "please provide a commit hash to reset back to ..."
+if [[ -z $COMMIT_HASH || $COMMIT_HASH == "-h" || $COMMIT_HASH == "--help" ]]; then
   echo "usage: grc <commit_sha> [files ...]"
   exit 1
 fi
