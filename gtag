@@ -2,7 +2,7 @@
 # Create provided tag on project
 
 TAG_NAME=$1
-TAG_MESSAGE=$(git branch | grep '*' | cut -d' ' -f2)
+TAG_MESSAGE=$(git log -1 --pretty=%B)
 
 if [[ -z $TAG_NAME ]]; then
   echo "must provide a tag name"
