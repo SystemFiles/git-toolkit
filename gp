@@ -32,7 +32,7 @@ if [[ -z $CHANGE_TYPE ]]; then
   exit 1
 fi
 
-if [[ $CHANGE_TYPE != "feat" && $CHANGE_TYPE != "update" && $CHANGE_TYPE != "chore" && $CHANGE_TYPE != "fix" && $CHANGE_TYPE != "docs" && $CHANGE_TYPE != "refactor" && $CHANGE_TYPE != "test" && $CHANGE_TYPE != "perf" && $CHANGE_TYPE != "ci" && $CHANGE_TYPE != "build" && $CHANGE_TYPE != "init" ]]; then
+if [[ $CHANGE_TYPE != "feat" && $CHANGE_TYPE != "update" && $CHANGE_TYPE != "chore" && $CHANGE_TYPE != "fix" && $CHANGE_TYPE != "docs" && $CHANGE_TYPE != "refactor" && $CHANGE_TYPE != "test" && $CHANGE_TYPE != "perf" && $CHANGE_TYPE != "ci" && $CHANGE_TYPE != "build" && $CHANGE_TYPE != "init" && $CHANGE_TYPE != "breaking" ]]; then
   echo "[ERROR] The specified change type is not valid"
   echo "[ERROR] You must specify a change type described by: https://www.conventionalcommits.org/en/v1.0.0/#summary"
   exit 1
