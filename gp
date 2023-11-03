@@ -54,7 +54,7 @@ fi
 
 gpa
 git add -A
-[[ -f $HOME/.gitconfig && $(grep -ie "signingkey" $HOME/.gitconfig) -eq 0 ]] && git commit -S -m "$COMMIT_MESSAGE" || echo "NOT SIGNING"
+git commit -m "$COMMIT_MESSAGE"
 
 git push 2> /dev/null
 
