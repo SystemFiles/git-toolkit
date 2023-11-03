@@ -54,7 +54,7 @@ fi
 
 gpa
 git add -A
-git commit -m "$COMMIT_MESSAGE"
+[[ -f $HOME/.gitconfig && egrep -i "^\s{4}signingkey" ~/.gitconfig ]] && git commit -S -m "$COMMIT_MESSAGE" || git commit -m "$COMMIT_MESSAGE"
 
 git push 2> /dev/null
 
