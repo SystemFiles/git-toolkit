@@ -3,6 +3,8 @@
 # Stage, Commit and Push Changes for Branch
 
 function usage() {
+  echo "Performs a stage, commit and push for changes according to the conventionalcommits format"
+  echo
   echo "Usage: $(basename $0) [-s SCOPE] <commit_type> <commit_message> [-h]"
   echo
   echo "Required Arguments:"

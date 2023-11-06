@@ -1,6 +1,27 @@
 #!/bin/bash
 # Create provided tag on project
 
+function usage() {
+  echo "Creates a new tag on a git repository that points to the current HEAD."
+  echo "The tag message will be the log entry for the current commit at HEAD (by: 'git log -1 --pretty=%B')"
+  echo
+  echo "Usage: $(basename $0) <tag_name> [-h]"
+  echo
+  echo "Required Arguments:"
+  echo "tag_name            The name of the tag"
+  echo
+  echo "Optional Flags:"
+  echo "-h                     Displays this help dialog"
+
+  exit 0
+}
+
+while getopts 'h:' flag; do
+  case "${flag}" in
+    h) usage; exit 0 ;;
+  esac
+done
+
 TAG_NAME=$1
 TAG_MESSAGE=$(git log -1 --pretty=%B)
 

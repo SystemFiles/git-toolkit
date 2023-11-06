@@ -2,6 +2,26 @@
 # Git Merge
 # Will perform a squash-merge onto the default branch of the current repository
 
+function usage() {
+  echo "Performs a squash-merge onto the default branch of the current repository"
+  echo
+  echo "Usage: $(basename $0) <commit_message> [-h]"
+  echo
+  echo "Required Arguments:"
+  echo "commit_message         The message describing the change being made in this commit."
+  echo
+  echo "Optional Flags:"
+  echo "-h                     Displays this help dialog"
+
+  exit 0
+}
+
+while getopts 'h:' flag; do
+  case "${flag}" in
+    h) usage; exit 0 ;;
+  esac
+done
+
 FEATURE_BRANCH=$(git branch | grep '*' | cut -d' ' -f2)
 COMMIT_MESSAGE=${@:1}
 DEFAULT_BRANCH=$(git remote show origin | sed -n '/HEAD branch/s/.*: //p')
@@ -21,8 +41,15 @@ if [[ -z $COMMIT_MESSAGE ]]; then
   exit 1
 fi
 
+read -p "Are you sure you want to merge $FEATURE_BRANCH into $DEFAULT_BRANCH ? [y/N] " CONFIRM
+
+if [[ "$CONFIRM" != "y" && "$CONFIRM" != "Y" ]]; then
+echo "[INFO] Cancelling merge ..."
+exit 0
+fi
+
 gpa
-gp "outstanding changes"
+gp "chore: apply outstanding changes"
 git rebase -i $DEFAULT_BRANCH
 git checkout $DEFAULT_BRANCH
 git merge --squash $FEATURE_BRANCH

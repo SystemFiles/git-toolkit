@@ -2,19 +2,34 @@
 # Git Reset to Commit
 # Script will take a commit hash and reset the current branch to that point in time (WARN: this is not safe unless you know what you are doing)
 
+function usage() {
+  echo "Takes a commit SHA/tag and creates a new commit to the current branch that points to that new commit"
+  echo
+  echo "Usage: $(basename $0) <commit> [files ...] [-h]"
+  echo
+  echo "Required Arguments:"
+  echo "commit        The Commit SHA or Tag pointing to a commit that you wish to reset to"
+  echo "files         \(optional\) a list of files to target for the reset operation. All other files will remain untouched"
+  echo
+  echo "Optional Flags:"
+  echo "-h                     Displays this help dialog"
+
+  exit 0
+}
+
+while getopts 'h:' flag; do
+  case "${flag}" in
+    h) usage; exit 0 ;;
+  esac
+done
+
 COMMIT_HASH=$1
 COMMIT_FILES=( "${@:2}" )
 
-if [[ -z $COMMIT_HASH || $COMMIT_HASH == "-h" || $COMMIT_HASH == "--help" ]]; then
-  echo "usage: grc <commit_sha> [files ...]"
-  exit 1
-fi
-
-# reset specific files to a particular point in time
+# reset specific files to a particular commit
 if [[ ${#COMMIT_FILES[@]} > 0 ]]; then
   git checkout $COMMIT_HASH -- ${COMMIT_FILES[@]} > /dev/null 2>&1
-  echo "moved selected files back to $COMMIT_HASH"
-  echo "no commit was done to provide an opportunity to review manually"
+  echo "reset only selected files back to $COMMIT_HASH"
   exit 0
 fi
 
@@ -23,6 +38,3 @@ git reset --hard $COMMIT_HASH
 
 # move branch pointer back to previous head
 git reset --soft "HEAD@{1}"
-
-# commit the changes
-git commit -m "update(reset): moved branch HEAD back to $COMMIT_HASH"
