@@ -30,7 +30,7 @@ if [[ -z $TAG_NAME ]]; then
   exit 1
 fi
 
-gpa
+git fetch --tags --force && git pull --all --prune --force
 git tag --force -a "$TAG_NAME" -m "${TAG_MESSAGE[@]}"
 git push --tags --force
 git fetch --all --tags

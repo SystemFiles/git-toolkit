@@ -48,7 +48,7 @@ echo "[INFO] Cancelling merge ..."
 exit 0
 fi
 
-gpa
+git fetch --tags --force && git pull --all --prune --force
 gp "chore: apply outstanding changes"
 git rebase -i $DEFAULT_BRANCH
 git checkout $DEFAULT_BRANCH

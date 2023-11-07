@@ -54,7 +54,7 @@ if [[ -f "$(pwd)/.pre-commit-config.yaml" ]]; then
   echo "[INFO] This project uses Pre-Commit"
 fi
 
-gpa
+git fetch --tags --force && git pull --all --prune --force
 git add -A
 git commit -m "$COMMIT_MESSAGE"
 
