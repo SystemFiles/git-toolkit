@@ -5,29 +5,37 @@
 function usage() {
   echo "Performs a stage, commit and push for changes according to the conventionalcommits format"
   echo
-  echo "Usage: $(basename $0) [-s SCOPE] <commit_type> <commit_message> [-h]"
+  echo "Usage: $(basename $0) [-h] [-e] [-s SCOPE] <commit_type> <message>"
   echo
   echo "Required Arguments:"
   echo "commit_type            The type of change being made in this commit. Allowed types described in: https://www.conventionalcommits.org/en/v1.0.0-beta.2/#summary"
   echo "commit_message         The message describing the change being made in this commit."
+	echo "commit_description     if '-e' is provided, will encapsulate a longer description body for the commit"
   echo
   echo "Optional Flags:"
   echo "-s SCOPE               (optional) Specifies a scope for this work within a project."
+	echo "-e                     (optional) Specifies where there is an extended description for this commit"
   echo "-h                     Displays this help dialog"
 
   exit 0
 }
 
-while getopts 'hs:' flag; do
+while getopts 'hes:' flag; do
   case "${flag}" in
     h) usage; exit 0 ;;
+		e) EXTEND='true' ;;
     s) SCOPE="$OPTARG"; shift $((OPTIND-1)) ;;
   esac
 done
 
 BRANCH_NAME=$(git branch | grep '*' | cut -d' ' -f2)
 CHANGE_TYPE=${1}
-MESSAGE=${@:2}
+if [[ ! -z $EXTEND ]]; then
+	MESSAGE=${2}
+	DESCRIPTION=${@:3}
+else
+	MESSAGE=${@:2}
+fi
 
 if [[ -z $CHANGE_TYPE ]]; then
   echo "[ERROR] A change type must be supplied"
@@ -56,7 +64,12 @@ fi
 
 git fetch --tags --force && git pull --all --prune --force
 git add -A
-git commit -m "$COMMIT_MESSAGE"
+
+if [[ -z $DESCRIPTION ]]; then
+	git commit -m "$COMMIT_MESSAGE" -m "$DESCRIPTION"
+else
+	git commit -m "$COMMIT_MESSAGE"
+fi
 
 git push 2> /dev/null
 
