@@ -66,9 +66,9 @@ git fetch --tags --force && git pull --all --prune --force
 git add -A
 
 if [[ -z $DESCRIPTION ]]; then
-	git commit -m "$COMMIT_MESSAGE" -m "$DESCRIPTION"
-else
 	git commit -m "$COMMIT_MESSAGE"
+else
+	git commit -m "$COMMIT_MESSAGE" -m "$DESCRIPTION"
 fi
 
 git push 2> /dev/null
